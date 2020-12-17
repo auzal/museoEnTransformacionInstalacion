@@ -10,7 +10,6 @@ function preload(){
 	DATA.forbiddenTermsNoFormat = loadStrings("assets/lists/prohibidas.txt");
 	loadKeyLists();
 	loadBuilding();
-	loadFakeArchive(); // TEMPORARY FOR DEBUG
 }
 
 function setup() {
@@ -26,8 +25,6 @@ function setup() {
 	GLOBALS.marquee = new Marquee(fontMed);
 	GLOBALS.fade = new Fade();
 	GLOBALS.building = new Building(DATA.buildingData, fontMed);
-	processInitialArchive(fakeArchive);  // TEMPORARY, REPLACE WITH DATA FROM FIREBASE
-	
 }
 
 function draw() {

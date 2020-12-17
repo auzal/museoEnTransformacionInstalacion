@@ -115,9 +115,9 @@ function loadBuilding(){
 }
 
 
-function loadFakeArchive(){
-	fakeArchive = loadStrings("assets/fakeArchive.txt");
-}	
+// function loadFakeArchive(){
+// 	fakeArchive = loadStrings("assets/fakeArchive.txt");
+// }
 
 function processInitialArchive(previousData){
     
