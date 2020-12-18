@@ -17,6 +17,7 @@ class EntryVisualizer{
 		this.analize();
 		this.entryOpacity = 0;
 		this.renderingEntries = false;
+		this.fading = false;
 	
 	}	
 
@@ -86,9 +87,11 @@ class EntryVisualizer{
 	update(){
 
 
-		if(millis() - this.creationTime > CONFIG.visualizationInterval/2 && this.entries.length === 0 && !GLOBALS.fade.running){
+		if(millis() - this.creationTime > CONFIG.visualizationInterval/2 && this.entries.length === 0 && !this.fading){
 			//	console.log("FADING!!!");
+				this.fading = true;
 				GLOBALS.fade.fadeOut(CONFIG.visualizationInterval/2);
+		
 		}
 
 		if(millis() - this.creationTime > CONFIG.visualizationInterval && !this.renderingEntries){
@@ -109,8 +112,9 @@ class EntryVisualizer{
 			this.entryOpacity = map(elapsedTime, 0, CONFIG.visualizationEntriesTime/2, 0, 1);
 			this.entryOpacity = constrain(this.entryOpacity,0,1);
 
-			if( elapsedTime > CONFIG.visualizationEntriesTime*.75 && !GLOBALS.fade.running){
+			if( elapsedTime > CONFIG.visualizationEntriesTime*.75 && !GLOBALS.fade.running && !this.fading){
 				//console.log("in here");
+				this.fading = true;
 				GLOBALS.fade.fadeOut(CONFIG.visualizationInterval*.50);
 			}
 

@@ -19,6 +19,7 @@ class Building{
 		this.texts = [];
 		this.activationTime = 0;
 		this.readyToExit = false;
+		this.fading = false;
 		//this.print = true;
 	}
 
@@ -47,14 +48,16 @@ class Building{
 		}
 
 		if(millis() - this.activationTime > CONFIG.buildingTimeOut - CONFIG.buildingFade){
-			if(!GLOBALS.fade.running){
+			if(!this.fading){
 				GLOBALS.fade.fadeOut(CONFIG.buildingFade);
+				this.fading = true;
 			}
 		}
 	}
 
 	activate(){
 		this.activationTime = millis();
+		this.fading = false;
 		this.readyToExit = false;
 	}
 
