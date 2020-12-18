@@ -1,0 +1,4 @@
+espacio
+lugar
+paisaje
+ambiente

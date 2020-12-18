@@ -1,0 +1,10 @@
+- armar maquina de estados
+++++++++++- cargar listas 
+++++++++++- formatear listas 
+++++++++++- crear entradas falsa 
+++++++++++- armar sistema de exclusiones 
+- crear vinculaciones
+- portear ladrillos
+- version protector de pantallas?
+++++++++++- exportador SVG a .txt
+++++++++++- cargar SVG en p5js
