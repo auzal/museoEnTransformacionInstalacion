@@ -151,9 +151,11 @@ class EntryVisualizer{
 
 		for(let i = 0 ; i < this.keys.length ; i ++){
 			let key = this.keys[i];
-			for(let j =  DATA.answers.length -1 ; j >= 0; j--){
+			for(let j =  DATA.answers.length -2 ; j >= 0; j--){
 				if(DATA.answers[j].includes(key) && this.entries.length < CONFIG.maxLinks){
-					this.entries.push(DATA.answersNoFormat[j]);
+					if(DATA.answers[j] != this.textClean){
+						this.entries.push(DATA.answersNoFormat[j]);
+					}
 				}
 			}
 		}
