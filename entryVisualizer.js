@@ -1,6 +1,6 @@
 class EntryVisualizer{
 
-	constructor(text, font){   /// ENTRO SIN FORMATEAR NADA 
+	constructor(text, font){   /// ENTRO SIN FORMATEAR NADA
 		this.text = text;
 		this.textClean = formatString(text.substring(0));
 		//console.log(this.textNoFormat);
@@ -13,16 +13,17 @@ class EntryVisualizer{
 		this.changeTime = 0;
 		this.readyToExit = false;
 		this.keys = [];
+		this.keyListIndexes = [];
 		this.generatePositions();
 		this.analize();
 		this.entryOpacity = 0;
 		this.renderingEntries = false;
 		this.fading = false;
-	
-	}	
+
+	}
 
 	render(globalOpacity){
-		
+
 		push();
 		rectMode(CENTER);
 		textAlign(CENTER, CENTER);
@@ -41,7 +42,7 @@ class EntryVisualizer{
 			}
 		}
 
-	//this.renderGuides();
+		//this.renderGuides();
 
 		pop();
 	}
@@ -72,7 +73,7 @@ class EntryVisualizer{
 		if(sentence.length > CONFIG.maxVisualizationLength){
 			sentence = sentence.substring(0,CONFIG.maxVisualizationLength) + "...";
 		}
-     	fill(red(CONFIG.colorBackground), green(CONFIG.colorBackground), blue(CONFIG.colorBackground), 255*globalOpacity *opacity);
+		fill(red(CONFIG.colorBackground), green(CONFIG.colorBackground), blue(CONFIG.colorBackground), 255*globalOpacity *opacity);
 		noStroke();
 		textFont(this.font, fontSize);
 		let w = textWidth(sentence) + (textSize() * CONFIG.margins * 2);
@@ -89,16 +90,16 @@ class EntryVisualizer{
 
 		if(millis() - this.creationTime > CONFIG.visualizationInterval/2 && this.entries.length === 0 && !this.fading){
 			//	console.log("FADING!!!");
-				this.fading = true;
-				GLOBALS.fade.fadeOut(CONFIG.visualizationInterval/2);
-		
+			this.fading = true;
+			GLOBALS.fade.fadeOut(CONFIG.visualizationInterval/2);
+
 		}
 
 		if(millis() - this.creationTime > CONFIG.visualizationInterval && !this.renderingEntries){
 			//this.readyToExit = true;
 
 
-			
+
 			if(this.entries.length > 0){
 				this.renderingEntries = true;
 				this.changeTime = millis();
@@ -127,34 +128,89 @@ class EntryVisualizer{
 		for(let i = 0 ; i < this.entryPositions.length ; i++){
 			let pos = this.entryPositions[i];
 			let noiseScale = 0.005;
-		//	pos.x += map(noise(((pos.x + 200 + frameCount)* noiseScale) , ((pos.y + 500) * noiseScale)), 0, 1, -1, 1) * 20;
-		//	pos.y += map(noise(((pos.x + 500 + frameCount)* noiseScale) , ((pos.y + 200) * noiseScale)), 0, 1, -1, 1) * 20;
+			//	pos.x += map(noise(((pos.x + 200 + frameCount)* noiseScale) , ((pos.y + 500) * noiseScale)), 0, 1, -1, 1) * 20;
+			//	pos.y += map(noise(((pos.x + 500 + frameCount)* noiseScale) , ((pos.y + 200) * noiseScale)), 0, 1, -1, 1) * 20;
 		}
 
 	}
 
+	// analize(){
+	//
+	// 	for(let  i = 0 ; i < DATA.keyLists.length ; i++){
+	// 		let list = DATA.keyLists[i];
+	// 		for(let j = 0 ; j < list.length ; j++){  // each list of keys
+	// 			let key = list[j]; // each key
+	// 			//console.log("key -> " + key);
+	// 			if(this.textClean.includes(key)){
+	// 				if(this.notInKeyList(key)){
+	// 					this.keys.push(key);
+	//
+	// 				}
+	// 			}
+	//
+	// 		}
+	// 	}
+	//
+	// 	// at this point, this.keys has all the existing keys in the entry
+	//
+	// 	for(let i = 0 ; i < this.keys.length ; i ++){
+	// 		let key = this.keys[i];
+	// 		for(let j =  DATA.answers.length -2 ; j >= 0; j--){  // go around all previous answers
+	// 			if(this.entries.length < CONFIG.maxLinks){
+	// 				if(DATA.answers[j].includes(key) && this.entries.length < CONFIG.maxLinks){
+	// 			//	if(this.entryConnects(key) && this.entries.length < CONFIG.maxLinks){
+	// 					if(DATA.answers[j] != this.textClean){
+	// 						this.entries.push(DATA.answersNoFormat[j]);
+	// 					}
+	// 				}
+	// 			}else{
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	//
+	// 	//console.log(this.entries);
+	// 	//console.log(this.entries.length)
+	// }
+
 	analize(){
+
+		console.log("analyzing...");
 
 		for(let  i = 0 ; i < DATA.keyLists.length ; i++){
 			let list = DATA.keyLists[i];
-			for(let j = 0 ; j < list.length ; j++){
-				let key = list[j];
+			for(let j = 0 ; j < list.length ; j++){  // each list of keys
+				let key = list[j]; // each key
 				//console.log("key -> " + key);
 				if(this.textClean.includes(key)){
-					if(this.notInList(key)){
-						this.keys.push(key);
+					if(this.notInIndexList(i)){
+						this.keyListIndexes.push(i);
+
 					}
 				}
 
 			}
 		}
 
-		for(let i = 0 ; i < this.keys.length ; i ++){
-			let key = this.keys[i];
-			for(let j =  DATA.answers.length -2 ; j >= 0; j--){
-				if(DATA.answers[j].includes(key) && this.entries.length < CONFIG.maxLinks){
-					if(DATA.answers[j] != this.textClean){
-						this.entries.push(DATA.answersNoFormat[j]);
+		// at this point, this.keysListIndexes has all the existing lists in the entry
+
+		for(let i = 0 ; i < this.keyListIndexes.length ; i ++){
+
+	    let list = DATA.keyLists[this.keyListIndexes[i]];
+
+			for(let k = 0 ; k < list.length ; k++){
+
+				let key =list[k];
+				for(let j =  DATA.answers.length -2 ; j >= 0; j--){  // go around all previous answers
+					if(this.entries.length < CONFIG.maxLinks){
+						if(DATA.answers[j].includes(key) && this.entries.length < CONFIG.maxLinks){
+							//	if(this.entryConnects(key) && this.entries.length < CONFIG.maxLinks){
+							if(DATA.answers[j] != this.textClean){
+								this.entries.push(DATA.answersNoFormat[j]);
+							}
+						}
+					}else{
+						break;
 					}
 				}
 			}
@@ -164,7 +220,20 @@ class EntryVisualizer{
 		//console.log(this.entries.length)
 	}
 
-	notInList(key){
+	notInIndexList(index){
+		console.log("checking");
+		let result = true;
+		for(let i = 0 ; i < this.keyListIndexes.length ; i++){
+			if(index === this.keyListIndexes[i]){
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+
+
+	notInKeyList(key){
 		let result = true;
 		for(let i = 0 ; i < this.keys.length ; i++){
 			if(key === this.keys[i]){
@@ -202,21 +271,21 @@ class EntryVisualizer{
 	}
 
 	shuffle(array) {
-	  let m = array.length, t, i;
+		let m = array.length, t, i;
 
-	  // While there remain elements to shuffle…
-	  while (m) {
+		// While there remain elements to shuffle…
+		while (m) {
 
-	    // Pick a remaining element…
-	    i = Math.floor(Math.random() * m--);
+			// Pick a remaining element…
+			i = Math.floor(Math.random() * m--);
 
-	    // And swap it with the current element.
-	    t = array[m];
-	    array[m] = array[i];
-	    array[i] = t;
-	  }
+			// And swap it with the current element.
+			t = array[m];
+			array[m] = array[i];
+			array[i] = t;
+		}
 
-	  return array;
+		return array;
 	}
 
 	generatePositions(){
@@ -247,10 +316,10 @@ class EntryVisualizer{
 	addNoise(fixedPosition){
 		let p = fixedPosition;
 		let scale = 0.001;
-    	let offset = 50;
-    	let x = map(noise((p.x + frameCount * scale), (p.y * scale)), 0, 1, -offset, offset);
-    	let y = map(noise((p.x  * scale), (p.y + frameCount * scale)), 0, 1, -offset, offset);
-    	let delta = createVector(x,y);
+		let offset = 50;
+		let x = map(noise((p.x + frameCount * scale), (p.y * scale)), 0, 1, -offset, offset);
+		let y = map(noise((p.x  * scale), (p.y + frameCount * scale)), 0, 1, -offset, offset);
+		let delta = createVector(x,y);
 		return createVector(delta.x + fixedPosition.x, delta.y + fixedPosition.y);
 	}
 }

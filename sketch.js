@@ -22,9 +22,12 @@ function setup() {
 	GLOBALS.marquee = new Marquee(CONFIG.fontMed);
 	GLOBALS.fade = new Fade();
 	GLOBALS.building = new Building(DATA.buildingData, CONFIG.fontMed);
+	console.log("SETUP DONE!");
 }
 
 function draw() {
+
+//	console.log(DATA.answers.length);
 
 	background(0);
 	translate(width/2, height/2); // TODO DESDE EL CENTRO SIEMPRE
@@ -79,7 +82,9 @@ function mousePressed(){
 }
 
 function handleNewEntries(){
+
 	if(GLOBALS.newPendingEntries.length > 0){
+		//	console.log("handling...");
 		let somethingPassedSafetyCheck = false;
 		if(GLOBALS.newPendingEntries.length > 1){  // IF THERE ARE MORE THAN 1 NEW ENTRY
 			for(let i = 0 ; i < GLOBALS.newPendingEntries.length ; i++){
@@ -97,7 +102,7 @@ function handleNewEntries(){
 						GLOBALS.building.addEntry(newEntry, false);
 					}
 				}else{
-				//	print("ENTRY REJECTED!");
+					console.log("ENTRY REJECTED!");
 				}
 			}
 		}else{										// IF THERE'S ONLY ONE
@@ -111,7 +116,7 @@ function handleNewEntries(){
 				DATA.answersNoFormat.push(newEntry);
 				GLOBALS.building.addEntry(newEntry, true);
 			}else{
-			//	print("ENTRY REJECTED!");
+					console.log("ENTRY REJECTED!");
 			}
 
 		}

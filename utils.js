@@ -1,8 +1,21 @@
 
 function formatList(list){
+
+	// remove whitespaces
+	for(let i = list.length -1 ; i >= 0 ; i --){
+		if(list[i] === ""){
+			list.splice(i,1);
+			console.log("removed empty item");
+		}
+	}
+
+
+
+
 	for(let i = 0 ; i < list.length ; i ++){
-		list[i] = formatString(list[i]);
-		
+
+			list[i] = formatString(list[i]);
+
 	}
 }
 
@@ -34,7 +47,7 @@ function removeSpanishChars(word){
 }
 
 function loadKeyLists(){
-	
+
 	let count = 0;
 	let numLists = 10;
 	while(GLOBALS.keepLoadingLists){
@@ -47,7 +60,7 @@ function loadKeyLists(){
 		if(count == numLists){ // failsafe
 			GLOBALS.keepLoadingLists = false;
 		}
-		
+
 	}
 	//print("LOADED " + count + " LISTS");
 }
@@ -102,13 +115,13 @@ function checkForSafety(newEntry){
 		result = false;
 	}
 
-	//check for numbers 
+	//check for numbers
 	let matches = newEntry.match(/\d+/g);
 	if (matches != null) {
    	 	if(matches[0].length > CONFIG.maxNumbersInEntry){
    	 		result = false;
    	 	}
-   		
+
 	}
 
 
@@ -119,7 +132,7 @@ function acceptNewEntry(){
 	//GLOBALS.currentState = "NEWENTRY";
 	GLOBALS.currentState = "NEWENTRY";
 	GLOBALS.fade.fadeIn(CONFIG.visualizationInterval*.3);
-	
+
 	GLOBALS.entryVisualizer = new EntryVisualizer(DATA.answersNoFormat[DATA.answersNoFormat.length-1], CONFIG.fontMed);
 
 }
@@ -127,7 +140,7 @@ function acceptNewEntry(){
 
 function loadBuilding(){
 	DATA.buildingData = loadXML("assets/svg/svg.xml");
-	
+
 }
 
 
@@ -136,7 +149,7 @@ function loadBuilding(){
 // }
 
 function processInitialArchive(previousData){
-    
+
 	for(let i = 0 ; i < previousData.length ; i++){
 		let newEntry = previousData[i];
 	    let entryFormat = newEntry.substring(0);
@@ -151,7 +164,7 @@ function processInitialArchive(previousData){
 	}
 
 	if(DATA.answersNoFormat.length > 0){
-		
+
 		print("LOADED " + DATA.answersNoFormat.length + " PREVIOUS ENTRIES");
 		GLOBALS.building.loadExisting(DATA.answersNoFormat);
 		startMarquee();
