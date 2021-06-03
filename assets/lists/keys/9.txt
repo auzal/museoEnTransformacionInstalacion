@@ -1,2 +1,7 @@
-Región
-Patagonia
+espacio
+lugar
+paisaje
+ambiente
+naturaleza
+medio
+territorio
